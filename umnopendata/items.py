@@ -6,9 +6,27 @@
 from scrapy.item import Item, Field
 
 class ClassItem(Item):
-    # define the fields for your item here like:
-    # name = Field()
-    pass
+
+    term = Field()
+    subject = Field()
+    name = Field()
+    classes = Field()
+
+    # The classes field contains a list of dicts representing
+    # the actual lectures and discussions for the class. Each
+    # class may have all or some of the following fields.
+    #
+    # section_number
+    # start_time
+    # end_time
+    # days
+    # credits
+    # instructors
+    # class_number
+    # mode
+    # location
+    #
+
 
 class DepartmentItem(Item):
     pass
