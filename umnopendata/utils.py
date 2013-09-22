@@ -19,14 +19,12 @@ def parse_class_description(desc):
     class_sec_re = re.compile(r'-(?P<section>[0-9]{3}) (?P<class_type>[A-Z]{3})')
     class_credits_re = re.compile(r'(?P<credits>([1-9] - )?[1-9]) credits?')
 
-
-
     cleaned_desc = []
     for line in desc:
         cleaned_desc.append(
                 re.sub(r'\s+', ' ', line.replace(u'\xa0', u' '))
                 )
-        cleaned_desc = ''.join(cleaned_desc)
+    cleaned_desc = ''.join(cleaned_desc)
     class_params = {}
 
     class_time = class_time_re.search(cleaned_desc)
@@ -40,7 +38,7 @@ def parse_class_description(desc):
                 days=class_days
                 )
 
-        class_sec = class_sec_re.search(cleaned_desc)
+    class_sec = class_sec_re.search(cleaned_desc)
     if class_sec:
         class_sec = class_sec.groupdict()
         class_params.update(
@@ -48,9 +46,9 @@ def parse_class_description(desc):
                 section_number=class_sec['section'],
                 )
 
-        class_credits = class_credits_re.search(cleaned_desc)
+    class_credits = class_credits_re.search(cleaned_desc)
     if class_credits:
-        class_credits = class_sec.groupdict()
+        class_credits = class_credits.groupdict()
         class_params.update(
                 credits=class_credits['credits'],
                 )
@@ -59,9 +57,37 @@ def parse_class_description(desc):
 
 def ProcessClasses(classes):
     """
-    Takes a list of classes dicts and cleans up the fields
+    Cleans up the fields in a class dictionary object.
     """
 
-    # not yet implemented
-    pass
+    mode_re = re.compile(
+            'instruction mode: (?P<mode>([\w-]+(\s[\w-]+)*)/?([\w-]+(\s[\w-]+)*))'
+            )
+    print classes
+
+    processed = []
+    for _class in classes:
+        for key, val in _class.items():
+
+            if key=='class_number':
+                if len(val)>0:
+                    _class[key] = val[0]
+            if key=='instructors':
+                if len(val)>0:
+                    _class[key] = val
+            if key=='mode':
+                if len(val)>0:
+                    mode = mode_re.search(val[0])
+                    if mode:
+                        mode = mode.groupdict()['mode']
+                        _class[key] = mode
+            if key=='location':
+                if len(val)>0:
+                    location = location[0]
+                    location = re.sub(
+                            r'\s+', ' ', location.replace(u'\xa0', u' ')
+                            )
+                    _class[key] = location
+            processed.append(_class)
+    return processed
 

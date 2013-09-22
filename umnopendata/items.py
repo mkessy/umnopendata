@@ -10,6 +10,7 @@ class ClassItem(Item):
     term = Field()
     subject = Field()
     name = Field()
+    number = Field()
     classes = Field()
 
     # The classes field contains a list of dicts representing

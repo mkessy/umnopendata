@@ -11,5 +11,10 @@ BOT_NAME = 'umnopendata'
 SPIDER_MODULES = ['umnopendata.spiders']
 NEWSPIDER_MODULE = 'umnopendata.spiders'
 
+SPIDER_CONTRACTS = {
+        'umnopendata.contracts.FormContract':10,
+        'umnopendata.contracts.ClassContract':10,
+        }
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'umnopendata (+http://www.yourdomain.com)'
