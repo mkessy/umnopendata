@@ -3,31 +3,46 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
+from scrapy.contrib.loader.processor import (
+        MapCompose, Join, TakeFirst, Identity
+        )
 from scrapy.item import Item, Field
 
 class ClassItem(Item):
+    """
+    This item represents a class, e.g CSCI 4041
+
+    """
 
     term = Field()
+    class_id = Field() # unique for each class
     subject = Field()
     name = Field()
     number = Field()
-    classes = Field()
-
-    # The classes field contains a list of dicts representing
-    # the actual lectures and discussions for the class. Each
-    # class may have all or some of the following fields.
-    #
-    # section_number
-    # start_time
-    # end_time
-    # days
-    # credits
-    # instructors
-    # class_number
-    # mode
-    # location
-    #
+    classes = Field() # list of pks(database sense) for related LectureItems
 
 
-class DepartmentItem(Item):
-    pass
+class LectureItem(Item):
+    """
+    This item represents a lecture, recitation, lab etc tied to a
+    particular class. For example, a LectureItem would represent recitation
+    section 2 (DIS 002) for CSCI 4041, which would be represented by a ClassItem
+    """
+
+    section_number = Field()
+    start_time = Field()
+    class_type = Field()
+    end_time = Field()
+    days = Field()
+    credits = Field()
+    instructors = Field()
+    classnum = Field(
+            input_processor=TakeFirst(),
+            )
+    mode = Field()
+    location = Field()
+
+
+
+
+
