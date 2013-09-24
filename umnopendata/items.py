@@ -15,7 +15,7 @@ class ClassItem(Item):
     """
 
     term = Field()
-    class_id = Field() # unique for each class
+    classid = Field() # unique for each class
     subject = Field()
     name = Field()
     number = Field()
@@ -29,16 +29,14 @@ class LectureItem(Item):
     section 2 (DIS 002) for CSCI 4041, which would be represented by a ClassItem
     """
 
-    section_number = Field()
+    sectionnumber = Field()
     start_time = Field()
     class_type = Field()
     end_time = Field()
     days = Field()
     credits = Field()
     instructors = Field()
-    classnum = Field(
-            input_processor=TakeFirst(),
-            )
+    classnum = Field()
     mode = Field()
     location = Field()
 

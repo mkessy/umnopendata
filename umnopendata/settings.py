@@ -1,3 +1,7 @@
+"""Development settings and globals"""
+
+from os.path import join, abspath, dirname
+
 # Scrapy settings for umnopendata project
 #
 # For simplicity, this file contains only the most important settings by
@@ -5,6 +9,14 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
+
+########## PATH CONFIGURATION
+
+PROJECT_PATH = dirname(abspath(__file__))
+ROOT_PATH = dirname(PROJECT_PATH)
+TEST_PATH = join(PROJECT_PATH, 'tests')
+
+########## END PATH CONFIGURATION
 
 BOT_NAME = 'umnopendata'
 

@@ -1,7 +1,9 @@
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request, FormRequest
-
+from scrapy.contrib.loader.processor import (
+        MapCompose, Join, TakeFirst, Identity
+        )
 from umnopendata.items import ClassItem, LectureItem
 from umnopendata.utils import parse_class_description
 from umnopendata.loaders import ClassLoader, LectureLoader
@@ -76,8 +78,8 @@ classschedule_selectsubject.jsp?campus=UMNTC']
         """
 
         # debugging
-        from scrapy.shell import inspect_response
-        inspect_response(response)
+        #from scrapy.shell import inspect_response
+        #inspect_response(response)
         # end debugging
 
         # instantiate xpath selector and item loaders
@@ -93,9 +95,11 @@ classschedule_selectsubject.jsp?campus=UMNTC']
         for block in class_blocks:
 
             class_loader = ClassLoader(item=ClassItem(), response=response)
+            # the term is the first part of a class_id
             class_loader.add_xpath(
-                    'class_id',
-                    '//div[@class="pageSubTitle"]/text()',
+                    'classid',
+                    term_xpath,
+                    # processor
                     )
 
             class_loader.add_xpath('term', term_xpath)
@@ -106,7 +110,7 @@ classschedule_selectsubject.jsp?campus=UMNTC']
             class_loader.add_xpath('name', './h3[a/@name]/text()')
             class_loader.add_xpath('number', './h3[a/@name]/text()')
             # the class id is the second part of a class_id
-            class_loader.add_xpath('class_id', './h3/a[@name]/@name')
+            class_loader.add_xpath('classid', './h3/a[@name]/@name')
 
             classes = []
             class_table_rows  = block.select(
@@ -122,10 +126,13 @@ classschedule_selectsubject.jsp?campus=UMNTC']
                         './td[@class="description"]/text()'
                         ).extract()
                 class_desc = parse_class_description(class_desc)
+
                 lecture_loader.add_value(None, class_desc)
 
-                # classNumber = a list of class registration numbers
+#                for key, val in class_desc.items():
+#                    lecture_loader.add_value(key, val)
 
+                # classNum = a list of class registration numbers
                 lecture_loader.add_xpath(
                         'classnum',
                         './td[@class="classNumber"]/text()'

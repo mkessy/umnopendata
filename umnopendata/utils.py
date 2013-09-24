@@ -8,7 +8,7 @@ def parse_class_description(desc):
     start_time
     end_time
     days
-    section_number
+    sectionnumber
     credits
     type (LEC, DIS, IND, etc.)
 
@@ -43,7 +43,7 @@ def parse_class_description(desc):
         class_sec = class_sec.groupdict()
         class_params.update(
                 class_type=class_sec['class_type'],
-                section_number=class_sec['section'],
+                sectionnumber=class_sec['section'],
                 )
 
     class_credits = class_credits_re.search(cleaned_desc)
@@ -54,6 +54,25 @@ def parse_class_description(desc):
                 )
 
     return class_params
+
+def process_mode(mode):
+
+    mode_re = re.compile(
+            'instruction mode: (?P<mode>([\w-]+(\s[\w-]+)*)/?([\w-]+(\s[\w-]+)*))'
+            )
+
+    mode = mode_re.search(mode)
+    if mode:
+        mode = mode.groupdict()['mode']
+    return mode
+
+# move to utils?
+def process_location(location):
+    location = re.sub(
+            r'\s+', ' ', location.replace(u'\xa0', u' ')
+            )
+    return location
+
 
 def ProcessClasses(classes):
     """

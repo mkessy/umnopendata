@@ -2,9 +2,8 @@ from scrapy.contrib.loader import XPathItemLoader
 from scrapy.contrib.loader.processor import (
         MapCompose, Join, TakeFirst, Identity
         )
-
 from umnopendata.items import ClassItem
-from umnopendata.utils import ProcessClasses
+from umnopendata.utils import process_mode, process_location
 
 import re
 
@@ -40,34 +39,22 @@ class ClassLoader(XPathItemLoader):
             )
     number_out = Join()
 
-    class_id_in = Join()
+    classid_in = MapCompose(
+            lambda x: x.lower(),
+            lambda x: x.replace(' ', '')
+            )
+    classid_out = Join('')
 
-    #classes_in = MapCompose(ProcessClasses)
 
 class LectureLoader(XPathItemLoader):
     """
     Loader for the LectureItem item
     """
 
+    # would be more concise to define Join as default
     default_output_processor = Identity()
 
     # move to utils?
-    def process_mode(mode):
-        mode_re = re.compile(
-                'instruction mode: (?P<mode>([\w-]+(\s[\w-]+)*)/?([\w-]+(\s[\w-]+)*))'
-                )
-        mode = mode_re.search(mode)
-        if mode:
-            mode = mode.groupdict()['mode']
-        return mode
-
-    # move to utils?
-    def process_location(location):
-        location = re.sub(
-                r'\s+', ' ', location.replace(u'\xa0', u' ')
-                )
-        return location
-
 #    _class = Field()
 #    section_number = Field()
 #    start_time = Field()
@@ -82,16 +69,32 @@ class LectureLoader(XPathItemLoader):
     # can add loaders for everything captured
     # in the description parsing method
 
+    sectionnumber_in = TakeFirst()
+    sectionnumber_out = Join('')
+
+    class_type_in = TakeFirst()
+    class_type_out = Join('')
+
+    credits_in = TakeFirst()
+    credits_out = Join('')
+
+    days_in = TakeFirst()
+    days_out = Join(',')
+
     classnum_in = TakeFirst()
+    classnum_out = Join('')
+
+    start_time_in_= TakeFirst()
+    start_time_out = Join('')
+
+    end_time_in = TakeFirst()
+    end_time_out = Join('')
+
     instructors_in = Identity()
-    mode_in = MapCompose(process_mode)
-    location_in = MapCompose(process_location)
 
-
-
-
-
-
+    mode_in = MapCompose(process_mode, TakeFirst())
+    location_in = MapCompose(process_location, lambda x: x.strip())
+    location_out = Join('')
 
 
 
