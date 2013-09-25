@@ -1,9 +1,7 @@
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request, FormRequest
-from scrapy.contrib.loader.processor import (
-        MapCompose, Join, TakeFirst, Identity
-        )
+
 from umnopendata.items import ClassItem, LectureItem
 from umnopendata.utils import parse_class_description
 from umnopendata.loaders import ClassLoader, LectureLoader
@@ -128,9 +126,6 @@ classschedule_selectsubject.jsp?campus=UMNTC']
                 class_desc = parse_class_description(class_desc)
 
                 lecture_loader.add_value(None, class_desc)
-
-#                for key, val in class_desc.items():
-#                    lecture_loader.add_value(key, val)
 
                 # classNum = a list of class registration numbers
                 lecture_loader.add_xpath(
