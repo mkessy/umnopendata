@@ -61,10 +61,10 @@ def process_mode(mode):
             'instruction mode: (?P<mode>([\w-]+(\s[\w-]+)*)/?([\w-]+(\s[\w-]+)*))'
             )
 
-    mode = mode_re.search(mode)
-    if mode:
-        mode = mode.groupdict()['mode']
-    return mode
+    mode = mode_re.search(mode.replace(u'\xa0', u' '))
+    if mode is not None:
+        return mode.groupdict()['mode']
+    return None
 
 # move to utils?
 def process_location(location):

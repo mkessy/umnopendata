@@ -107,10 +107,10 @@ class TestSpider(unittest.TestCase):
            # add location test
 
         # tests for AHS 4300
-        item = item[7]
+        item = items[7]
 
         self.assertEqual(item['term'], u'fall_2013')
-        self.assertEqual(item['classid'], 'fall2013AHS4300')
+        self.assertEqual(item['classid'], 'fall2013ahs4300')
         self.assertEqual(item['name'], u'Directed Study')
         self.assertEqual(item['number'], u'4300')
         self.assertEqual(len(item['classes']), 2)
@@ -118,8 +118,6 @@ class TestSpider(unittest.TestCase):
         self.assertEqual(
                 item['classes'][0]['sectionnumber'],
                 u'001')
-
-        self.assertIsNone(item['classes'][0]['start_time'])
 
         self.assertEqual(
                 item['classes'][0]['class_type'],

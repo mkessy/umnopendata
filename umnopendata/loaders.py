@@ -52,7 +52,7 @@ class LectureLoader(XPathItemLoader):
     """
 
     # would be more concise to define Join as default
-    default_output_processor = Identity()
+    default_output_processor = Join('')
 
     # move to utils?
 #    _class = Field()
@@ -70,31 +70,25 @@ class LectureLoader(XPathItemLoader):
     # in the description parsing method
 
     sectionnumber_in = TakeFirst()
-    sectionnumber_out = Join('')
 
     class_type_in = TakeFirst()
-    class_type_out = Join('')
 
     credits_in = TakeFirst()
-    credits_out = Join('')
 
     days_in = TakeFirst()
-    days_out = Join(',')
 
     classnum_in = TakeFirst()
-    classnum_out = Join('')
 
     start_time_in_= TakeFirst()
-    start_time_out = Join('')
 
     end_time_in = TakeFirst()
-    end_time_out = Join('')
 
     instructors_in = Identity()
+    instructors_out = Identity()
 
-    mode_in = MapCompose(process_mode, TakeFirst())
+    mode_in = MapCompose(process_mode)
+
     location_in = MapCompose(process_location, lambda x: x.strip())
-    location_out = Join('')
 
 
 
