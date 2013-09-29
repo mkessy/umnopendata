@@ -14,16 +14,19 @@ class ValidatorPipeline(object):
         # none values aren't passed as valid params, catch
         # the key error and raise DropItem
 
-        if not item['term']:
-            raise DropItem("Missing term in %s " % item)
-        if not item['classid']:
-            raise DropItem("Missing classid in %s " % item)
-        if not item['subject']:
-            raise DropItem("Missing subject in %s " % item)
-        if not item['name']:
-            raise DropItem("Missing name in %s " % item)
-        if not item['number']:
-            raise DropItem("Missing number in %s " % item)
+        try:
+            if not item['term']:
+                raise DropItem("Missing term in %s " % item)
+            if not item['classid']:
+                raise DropItem("Missing classid in %s " % item)
+            if not item['subject']:
+                raise DropItem("Missing subject in %s " % item)
+            if not item['name']:
+                raise DropItem("Missing name in %s " % item)
+            if not item['number']:
+                raise DropItem("Missing number in %s " % item)
+        except KeyError as xcpt:
+            raise DropItem("Required field missing: %s " xcpt)
 
         return item
 
@@ -37,7 +40,10 @@ class DuplicatesPipeline(object):
 
     def process_item(self, item, spider):
         if item['classid'] in self.classes_seen:
-            raise DropItem("Duplicate found: %s" % item)
+            raise DropItem("Duplicate class found: %s" % item)
+
+        if len(item['classes'])!=0:
+
         else:
             self.classes_seen.add(item['classid'])
             return item
@@ -46,6 +52,9 @@ class ItemToModelPipeline(object):
     """
     Serialize Class and Lecture items into Django models
     """
+
+    def __init__(self):
+        pass
 
     def process_item(self, item, spider):
 

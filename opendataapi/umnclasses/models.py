@@ -14,6 +14,7 @@ class Class(models.Model):
 class Lecture(models.Model):
 
     sectionnumber = models.CharField(primary_key=True, max_length=200)
+
     _class = models.ForeignKey(Class)
     start_time = models.TimeField()
     end_time = models.TimeField()

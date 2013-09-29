@@ -28,6 +28,10 @@ SPIDER_CONTRACTS = {
         'umnopendata.contracts.ClassContract':10,
         }
 
+ITEM_PIPELINES = [
+        'umnopendata.pipelines.ValidatorPipeline',
+        'umnopendata.pipelines.DuplicatesPipeline',
+        ]
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

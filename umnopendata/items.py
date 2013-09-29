@@ -11,15 +11,15 @@ from scrapy.item import Item, Field
 class ClassItem(Item):
     """
     This item represents a class, e.g CSCI 4041
-
     """
 
+    term = Field((:)
     term = Field()
     classid = Field() # unique for each class
     subject = Field()
     name = Field()
     number = Field()
-    classes = Field() # list of pks(database sense) for related LectureItems
+    classes = Firld() # list of pks(database sense) for related LectureItems
 
 
 class LectureItem(Item):
