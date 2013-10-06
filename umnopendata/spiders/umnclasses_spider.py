@@ -24,12 +24,6 @@ classschedule_selectsubject.jsp?campus=UMNTC']
         Overrides the default class method.
 
         ##### CONTRACTS #####
-        #@url
-        #@returns items 0 0
-        #@returns requests 1 10
-        # response checks
-        #@correct_form
-        # end response checks
         ##### END CONTRACTS #####
 
         """
@@ -42,9 +36,6 @@ classschedule_selectsubject.jsp?campus=UMNTC']
         representing a search for a particular term and subject.
 
         ##### contracts #####
-        @url http://onestop2.umn.edu/courseinfo/classschedule_selectsubject.jsp?campus=UMNTC
-        @returns requests 10
-        @correct_form
         ##### end contracts #####
         """
 
@@ -70,9 +61,6 @@ classschedule_selectsubject.jsp?campus=UMNTC']
 
     def parse_class_schedule(self, response):
         """
-        @url http://onestop2.umn.edu/courseinfo/viewClassScheduleTermAndSubject.do?campus=UMNTC&searchTerm=UMNTC%2C1139%2CFall%2C2013%2Cfalse&searchSubject=AHS%7CAcademic+Health+Center+Shared+-+AHS&searchFullYearEnrollmentOnly=false&Submit=View
-        @returns items 1
-        @class_contract
         """
 
         # debugging

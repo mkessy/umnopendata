@@ -26,7 +26,7 @@ class ValidatorPipeline(object):
             if not item['number']:
                 raise DropItem("Missing number in %s " % item)
         except KeyError as xcpt:
-            raise DropItem("Required field missing: %s " xcpt)
+            raise DropItem("Required field missing: %s " % xcpt)
 
         return item
 
@@ -39,11 +39,9 @@ class DuplicatesPipeline(object):
         self.classes_seen = set()
 
     def process_item(self, item, spider):
+
         if item['classid'] in self.classes_seen:
             raise DropItem("Duplicate class found: %s" % item)
-
-        if len(item['classes'])!=0:
-
         else:
             self.classes_seen.add(item['classid'])
             return item
