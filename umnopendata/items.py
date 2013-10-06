@@ -30,6 +30,7 @@ class LectureItem(Item):
     class_type = Field()
     end_time = Field()
     days = Field()
+    class_type = Field()
     credits = Field()
     instructors = Field()
     classnum = Field()

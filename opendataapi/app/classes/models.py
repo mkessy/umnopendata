@@ -1,48 +1,42 @@
 from app import db
 
 class Uclass(db.Model):
-    #id = classid from scrapy item
-    id = db.Column(db.String(64), primary_key = True)
-    term = db.Column(db.String(64), index=True)
-    subject = db.Column(db.String(120), index=True)
-    name = db.Column(db.String(600), index=True)
+    #id = classid froms scrapy items
+    id = db.Column(db.String(64), primary_key=True, nullable=False)
+    term = db.Column(db.String(64))
+    subject = db.Column(db.String(600), index=True)
+    name = db.Column(db.String(600), index=True, nullable=False)
     number = db.Column(db.String(120), index=True)
-    lectures = db.relationship('Lecture', backref='uclass', lazy='dynamic')
+    lectures = db.relationship('Lecture', backref='class', lazy='dynamic')
+    last_updated = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<Uclass %r>' % (self.name)
 
 
 class Lecture(db.Model):
     # insert database rows here
-    pass
+    # how to implement pk?
+    #id = db.Column
+    uclass = db.Column(
+            db.String(64),
+            db.ForeignKey('uclass.id'),
+            primary_key=True,
+            nullable=False,
+            )
+    sec_num = db.Column(db.String(64), primary_key=True, nullable=False)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    days = db.Column(db.String(64))
+    credits = db.Column(db.String(64))
+    class_type = db.Column(db.String(64))
+    classnum = db.Column(db.String(64), index=True)
+    mode = db.Column(db.String(600), index=True)
+    instructors = db.Column(db.String(600), index=True)
+    location = db.Column(db.String(120))
+    last_updated = db.Column(db.DateTime)
 
-#class ClassItem(Item):
-#    """
-#    This item represents a class, e.g CSCI 4041
-#    """
-#
-#    term = Field()
-#    classid = Field() # unique for each class
-#    subject = Field()
-#    name = Field()
-#    number = Field()
-#    classes = Field() # list of pks(database sense) for related LectureItems
-#
-#
-#class LectureItem(Item):
-#    """
-#    This item represents a lecture, recitation, lab etc tied to a
-#    particular class. For example, a LectureItem would represent recitation
-#    section 2 (DIS 002) for CSCI 4041, which would be represented by a ClassItem
-#    """
-#
-#    sectionnumber = Field()
-#    start_time = Field()
-#    class_type = Field()
-#    end_time = Field()
-#    days = Field()
-#    credits = Field()
-#    instructors = Field()
-#    classnum = Field()
-#    mode = Field()
-#    location = Field()
-#
-#
+    def __repr__(self):
+        return '<lecture %r %r>' % (self.sec_num, self.class_type)
+
+

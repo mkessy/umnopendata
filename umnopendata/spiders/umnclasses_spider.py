@@ -64,8 +64,8 @@ classschedule_selectsubject.jsp?campus=UMNTC']
         """
 
         # debugging
-        #from scrapy.shell import inspect_response
-        #inspect_response(response)
+        from scrapy.shell import inspect_response
+        inspect_response(response)
         # end debugging
 
         # instantiate xpath selector and item loaders
