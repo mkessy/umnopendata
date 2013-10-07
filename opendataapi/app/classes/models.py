@@ -7,12 +7,12 @@ class Uclass(db.Model):
     subject = db.Column(db.String(600), index=True)
     name = db.Column(db.String(600), index=True, nullable=False)
     number = db.Column(db.String(120), index=True)
+    # backrefs cannot have same name as db tables
     lectures = db.relationship('Lecture', backref='class', lazy='dynamic')
     last_updated = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<Uclass %r>' % (self.name)
-
 
 class Lecture(db.Model):
     # insert database rows here
