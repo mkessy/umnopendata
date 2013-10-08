@@ -35,6 +35,8 @@ def run_migrations_offline():
     script output.
 
     """
+    from app.classes.models import Uclass, Lecture
+
     url = config.get_main_option("sqlalchemy.url")
     context.configure(url=url)
 

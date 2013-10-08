@@ -1,4 +1,3 @@
-
 from ..spiders.umnclasses_spider import UMNClassesSpider
 from .test_utils import generate_responses
 
@@ -37,28 +36,6 @@ class TestSpider(unittest.TestCase):
     def _test_items(self, items):
         # tests that the correct items are returned
         # in the correct format
-
-        #term = Field()
-        #classid = Field() # unique for each class
-        #subject = Field()
-        #name = Field()
-        #number = Field()
-        #classes = Field(
-            #sectionnumber = Field()
-            #start_time = Field()
-            #class_type = Field()
-            #end_time = Field()
-            #days = Field()
-            #credits = Field()
-            #instructors = Field()
-            #classnum = Field(
-            #        input_processor=TakeFirst(),
-            #        )
-            #mode = Field()
-            #location = Field()
-
-        # assertIsNotNone, assertEqual, assertIsInstance, assertIn
-        # items are what is expected
 
         item = items[0] # AHS 1101
         pprint(item, indent=2)

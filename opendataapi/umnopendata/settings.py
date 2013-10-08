@@ -31,6 +31,7 @@ SPIDER_CONTRACTS = {
 ITEM_PIPELINES = [
         'umnopendata.pipelines.ValidatorPipeline',
         'umnopendata.pipelines.DuplicatesPipeline',
+        'umnopendata.pipelines.ItemToModelPipeline',
         # add database pipeline
         ]
 

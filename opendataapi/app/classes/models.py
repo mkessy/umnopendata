@@ -8,7 +8,7 @@ class Uclass(db.Model):
     name = db.Column(db.String(600), index=True, nullable=False)
     number = db.Column(db.String(120), index=True)
     # backrefs cannot have same name as db tables
-    lectures = db.relationship('Lecture', backref='class', lazy='dynamic')
+    lectures = db.relationship('Lecture', backref='_class', lazy='dynamic')
     last_updated = db.Column(db.DateTime)
 
     def __repr__(self):
@@ -25,8 +25,8 @@ class Lecture(db.Model):
             nullable=False,
             )
     sec_num = db.Column(db.String(64), primary_key=True, nullable=False)
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
+    start_time = db.Column(db.String(64))
+    end_time = db.Column(db.String(64))
     days = db.Column(db.String(64))
     credits = db.Column(db.String(64))
     class_type = db.Column(db.String(64))
