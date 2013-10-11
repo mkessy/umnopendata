@@ -27,6 +27,15 @@ class ValidatorPipeline(object):
                     raise DropItem("Missing name in %s " % item)
                 if not item['number']:
                     raise DropItem("Missing number in %s " % item)
+
+                if len(item['classes']) != 0:
+                    for lec in item['classes']:
+                        if not lec.get('sectionnumber'):
+                            raise DropItem(
+                                    "Lecture missing section num in %s " % item
+                                    )
+                            print item
+
             except KeyError as xcpt:
                 raise DropItem("Required field missing: %s " % xcpt)
 
@@ -53,48 +62,60 @@ class ItemToModelPipeline(object):
     """
     Serialize Class and Lecture items into flask db models
     """
-#    id = db.Column(db.String(64), primary_key=True, nullable=False)
-#    term = db.Column(db.String(64))
-#    subject = db.Column(db.String(600), index=True)
-#    name = db.Column(db.String(600), index=True, nullable=False)
-#    number = db.Column(db.String(120), index=True)
-#    # backrefs cannot have same name as db tables
-#    lectures = db.relationship('Lecture', backref='class', lazy='dynamic')
-#    last_updated = db.Column(db.DateTime)
 
     def __init__(self):
+        pass
 
         from app.classes.models import Uclass, Lecture
         from app import db
-
-        self._class = Uclass
-        self.lecture = Lecture
+        self.Uclass = Uclass
+        self.Lecture = Lecture
         self.db = db
 
     def process_item(self, item, spider):
 
         if isinstance(item, ClassItem):
-            UclassModel = Uclass()
-            UclassModel.id = item.classid
-            UclassModel.subject = item.subject
-            UclassModel.name = item.name
-            UclassModel.number = item.number
-            UclassModel.last_updated = datetime.utcnow()
 
+            # check if class is already in db, if not create it
+            uclass_model = self.Uclass.query.get(item['classid'])
+            if not uclass_model:
+                uclass_model = self.Uclass()
+                uclass_model.id = item['classid']
 
+            uclass_model.term = item.get( 'term' )
+            uclass_model.subject = item.get( 'subject' )
+            uclass_model.name = item.get( 'name' )
+            uclass_model.number = item.get( 'number' )
+            uclass_model.last_updated = datetime.utcnow()
 
+            self.db.session.add(uclass_model)
 
+            lectures = []
+            if(len(item['classes']) != 0):
+                # check if lecture is already in db, if not create it
+                # note that lecture has a composite pk of its parent class
+                # and section number
+                for lec in item['classes']:
+                    lecture_model = self.Lecture.query.get(
+                            ident=(uclass_model.id,lec['sectionnumber'])
+                            )
+                    if not lecture_model:
+                        lecture_model = self.Lecture()
+                        lecture_model.uclass = uclass_model.id
+                        lecture_model.sec_num = lec['sectionnumber']
 
-
-
-
-
-
-
-
-
-
-
-
-
+                    lecture_model.class_type = lec.get( 'class_type' )
+                    lecture_model.start_time = lec.get( 'start_time' )
+                    lecture_model.end_time = lec.get( 'end_time' )
+                    lecture_model.days = lec.get( 'days' )
+                    lecture_model.instructors = lec.get( 'instructors' )
+                    lecture_model.classnum = lec.get( 'classnum' )
+                    lecture_model.location = lec.get( 'location' )
+                    lecture_model.mode = lec.get('mode')
+                    lecture_model.credits = lec.get('credits')
+                    lecture_model.last_updated = datetime.utcnow()
+                    lectures.append(lecture_model)
+                self.db.session.add_all(lectures)
+        self.db.session.commit()
+        return item
 

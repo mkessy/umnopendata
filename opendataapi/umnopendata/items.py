@@ -26,7 +26,6 @@ class LectureItem(Item):
 
     sectionnumber = Field()
     start_time = Field()
-    class_type = Field()
     end_time = Field()
     days = Field()
     class_type = Field()

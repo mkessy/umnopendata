@@ -15,8 +15,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app import db
-target_metadata = db.metadata
+#from app import db
+#target_metadata = db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -35,7 +35,9 @@ def run_migrations_offline():
     script output.
 
     """
+    from app import db
     from app.classes.models import Uclass, Lecture
+    target_metadata = db.metadata
 
     url = config.get_main_option("sqlalchemy.url")
     context.configure(url=url)
@@ -50,7 +52,9 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+    from app import db
     from app.classes.models import Uclass, Lecture
+    target_metadata= db.metadata
 
     engine = engine_from_config(
                 config.get_section(config.config_ini_section),
