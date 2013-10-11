@@ -66,7 +66,6 @@ def process_mode(mode):
         return mode.groupdict()['mode']
     return None
 
-# move to utils?
 def process_location(location):
     location = re.sub(
             r'\s+', ' ', location.replace(u'\xa0', u' ')

@@ -1,6 +1,6 @@
 from scrapy.contrib.loader import XPathItemLoader
 from scrapy.contrib.loader.processor import (
-        MapCompose, Join, TakeFirst, Identity
+        Compose, MapCompose, Join, TakeFirst, Identity
         )
 from umnopendata.items import ClassItem
 from umnopendata.utils import process_mode, process_location
@@ -53,19 +53,6 @@ class LectureLoader(XPathItemLoader):
 
     # would be more concise to define Join as default
     default_output_processor = Join('')
-
-    # move to utils?
-#    _class = Field()
-#    section_number = Field()
-#    start_time = Field()
-#    end_time = Field()
-#    days = Field()
-#    credits = Field()
-#    instructors = Field()
-#    class_number = Field()
-#    mode = Field()
-#    location = Field()
-
     # can add loaders for everything captured
     # in the description parsing method
 
@@ -84,12 +71,15 @@ class LectureLoader(XPathItemLoader):
     end_time_in = TakeFirst()
 
     instructors_in = Identity()
-    instructors_out = Identity()
+    instructors_out = Compose(lambda x: list(set(x)))
 
     mode_in = MapCompose(process_mode)
 
-    location_in = MapCompose(process_location, lambda x: x.strip())
-
-
+    location_in = MapCompose(
+            process_location,
+            lambda x: x.strip(),
+            )
+    # remove duplicate locations
+    location_out = Compose(lambda x: list(set(x)))
 
 
