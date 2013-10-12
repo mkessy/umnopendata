@@ -35,6 +35,8 @@ ITEM_PIPELINES = [
         # add database pipeline
         ]
 
+LOG_FILE = join(PROJECT_PATH, 'logs/logs.txt')
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'umnopendata (+http://www.yourdomain.com)'

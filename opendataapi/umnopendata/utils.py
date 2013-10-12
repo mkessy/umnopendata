@@ -4,19 +4,18 @@ def parse_class_description(desc):
     """
     Parse a course description returning the following class parameters
     in dictionary format:
-
     start_time
     end_time
     days
     sectionnumber
     credits
     type (LEC, DIS, IND, etc.)
-
     """
     class_time_re = re.compile(
             r'(?P<times>0([1-9]|1[0-2]):[0-5][0-9] (P\.M\.|A\.M\.) - 0([1-9]|1[0-2]):[0-5][0-9] (P\.M\.|A\.M\.)) , (?P<days>([MWF]|Tu|Th)(,([MWF]|Tu|Th)+)*)'
             )
-    class_sec_re = re.compile(r'-(?P<section>[0-9]{3}) (?P<class_type>[A-Z]{3})')
+    class_sec_re = re.compile(r'-?\*?(?P<section>([0-9]{3}|[A-Z][0-9]{2})) (?P<class_type>[A-Z]{3})')
+
     class_credits_re = re.compile(r'(?P<credits>([1-9] - )?[1-9]) credits?')
 
     cleaned_desc = []

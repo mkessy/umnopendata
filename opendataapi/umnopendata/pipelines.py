@@ -28,19 +28,20 @@ class ValidatorPipeline(object):
                 if not item['number']:
                     raise DropItem("Missing number in %s " % item)
 
+                # remove any lectures that have no section number
+                # which means they were likely canceled
                 if len(item['classes']) != 0:
-                    for lec in item['classes']:
-                        if not lec.get('sectionnumber'):
-                            raise DropItem(
-                                    "Lecture missing section num in %s " % item
-                                    )
-                            print item
+                    item['classes'] = [lec for lec in item['classes']
+                            if lec.get('sectionnumber')]
 
+                    #for lec in item['classes']:
+                    #    if not lec.get('sectionnumber'):
+                    #        raise DropItem(
+                    #                "Lecture missing section num in %s " % item
+                    #                )
+                    #        log.msg("#### DROPPED ITEM %s ####" % item['name'])
             except KeyError as xcpt:
                 raise DropItem("Required field missing: %s " % xcpt)
-
-        # if isinstance(item, LectureItem):
-        # validate item Lecture items
         return item
 
 class DuplicatesPipeline(object):

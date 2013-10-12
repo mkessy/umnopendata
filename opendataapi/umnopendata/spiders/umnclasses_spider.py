@@ -1,6 +1,7 @@
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request, FormRequest
+from scrapy import log
 
 from umnopendata.items import ClassItem, LectureItem
 from umnopendata.utils import parse_class_description
@@ -8,6 +9,7 @@ from umnopendata.loaders import ClassLoader, LectureLoader
 from umnopendata.contracts import FormContract, ClassContract
 
 import re
+log.start()
 
 class UMNClassesSpider(BaseSpider):
     """
@@ -52,6 +54,10 @@ classschedule_selectsubject.jsp?campus=UMNTC']
                         formdata={'searchTerm':t, 'searchSubject':s},
                         formname='submitScheduleRequestForm',
                         callback=self.parse_class_schedule,
+                        )
+                log.msg(
+                        "#### SCRAPING TERM: %s SUBJECT: %s ####" % (t, s),
+                        level=log.INFO
                         )
                 yield form_request
 
@@ -126,7 +132,9 @@ classschedule_selectsubject.jsp?campus=UMNTC']
                         'location',
                         './td[@class="description"]/a[contains(@onclick, "onestop.umn.edu/Maps")]/text()'
                         )
+
                 class_loader.add_value('classes', lecture_loader.load_item())
 
             yield class_loader.load_item()
+
 
