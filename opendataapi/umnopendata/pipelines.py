@@ -1,5 +1,4 @@
 # Define your item pipelines here
-#
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from scrapy.exceptions import DropItem
@@ -10,7 +9,6 @@ class ValidatorPipeline(object):
     """
     Validate Class item fields.
     """
-
     def process_item(self, item, spider):
         # will raise key error if item field isn't present since
         # none values aren't passed as valid params, catch
@@ -65,7 +63,6 @@ class ItemToModelPipeline(object):
     """
 
     def __init__(self):
-        pass
 
         from app.classes.models import Uclass, Lecture
         from app import db
@@ -84,7 +81,10 @@ class ItemToModelPipeline(object):
                 uclass_model.id = item['classid']
 
             uclass_model.term = item.get( 'term' )
-            uclass_model.subject = item.get( 'subject' )
+            subject = item.get( 'subject' )
+            if subject:
+                uclass_model.subject_full = subject[0]
+                uclass_model.subject_abbr = subject[1]
             uclass_model.name = item.get( 'name' )
             uclass_model.number = item.get( 'number' )
             uclass_model.last_updated = datetime.utcnow()
@@ -110,13 +110,23 @@ class ItemToModelPipeline(object):
                     lecture_model.end_time = lec.get( 'end_time' )
                     lecture_model.days = lec.get( 'days' )
                     lecture_model.instructors = lec.get( 'instructors' )
+
+                    # convert list to strings
+                    if lecture_model.instructors:
+                        lecture_model.instructors = str(lecture_model.instructors)
+
                     lecture_model.classnum = lec.get( 'classnum' )
                     lecture_model.location = lec.get( 'location' )
+
+                    # convert list to strings
+                    if lecture_model.location:
+                        lecture_model.location = str(lecture_model.location)
+
                     lecture_model.mode = lec.get('mode')
                     lecture_model.credits = lec.get('credits')
                     lecture_model.last_updated = datetime.utcnow()
                     lectures.append(lecture_model)
+
                 self.db.session.add_all(lectures)
         self.db.session.commit()
         return item
-

@@ -24,9 +24,9 @@ class ClassesTest(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
-    def test_working(self):
+    def test_classes(self):
+        pass
 
-        print 'YAY, a relatively simple'
 
 
 if __name__ == '__main__':

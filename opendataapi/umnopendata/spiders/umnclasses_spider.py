@@ -56,7 +56,7 @@ classschedule_selectsubject.jsp?campus=UMNTC']
                         callback=self.parse_class_schedule,
                         )
                 log.msg(
-                        "#### SCRAPING TERM: %s SUBJECT: %s ####" % (t, s),
+                        "#### REQUESTING TERM: %s SUBJECT: %s ####" % (t, s),
                         level=log.INFO
                         )
                 yield form_request

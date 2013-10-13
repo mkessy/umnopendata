@@ -4,7 +4,8 @@ class Uclass(db.Model):
     #id = classid froms scrapy items
     id = db.Column(db.String(64), primary_key=True, nullable=False)
     term = db.Column(db.String(64))
-    subject = db.Column(db.String(600), index=True)
+    subject_full = db.Column(db.String(600), index=True)
+    subject_abbr = db.Column(db.String(120), index=True)
     name = db.Column(db.String(600), index=True, nullable=False)
     number = db.Column(db.String(120), index=True)
     # backrefs cannot have same name as db tables
